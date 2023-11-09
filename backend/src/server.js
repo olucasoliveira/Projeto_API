@@ -8,4 +8,4 @@ const PORT = process.env.PORT || 3333;
 
 
 //Declarando a porta que será executada
-app.listen(PORT, () => console.log('Server running or port ${PORT}'));
+app.listen(PORT, () => console.log('Essa porra ta rodando na porta ' + PORT));

@@ -1,17 +1,14 @@
 const mysql = require("mysql2/promise");
 const fs = require("fs");
 require("dotenv").config();
-
+console.log(process.env.MYSQL_HOST)
 const connection = mysql.createPool({
+  connectionLimit : 10,
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DB,
-  ssl: {
-    ca: fs.readFileSync(
-      "/project/home/olucasoliveira/workspace/backend/src/models/certificates/SSL.crt",
-    ),
-  },
+  port: process.env.MYSQL_DB_PORT
 });
 
 module.exports = connection;

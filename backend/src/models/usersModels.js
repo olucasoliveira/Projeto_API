@@ -15,9 +15,11 @@ const createUser = async (user) => {
     const [createdUser] = await conn.execute(query, [nome, email, senha, tipo]);
     return { insertId: createdUser.insertId };
   } catch (error) {
-    return response.status(500).json({ ERROR: error });
+    console.error(error);
+    return false; 
   }
 };
+
 
 const userExist = async (user) => {
   try {
@@ -32,9 +34,11 @@ const userExist = async (user) => {
       return true; // Usuário existe
     }
   } catch (error) {
-    return response.status(500).json({ ERROR: error });
+    console.error(error);
+    return false; // Em caso de erro, também tratamos como usuário inexistente
   }
 };
+
 
 const checkData = async (body) => {
   try {
