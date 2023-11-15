@@ -39,6 +39,53 @@ const userExist = async (user) => {
   }
 };
 
+const vendExist = async (user) => {
+  try {
+    const { id_vendedor } = user;
+
+    const query = "SELECT ativo, tipo_user FROM USUARIO WHERE ID = ?";
+    const [userExistRows] = await conn.execute(query, [id_vendedor]);
+
+    if (
+      userExistRows.length === 0 ||
+      userExistRows[0].ativo === 0 ||
+      userExistRows[0].tipo_user !== 2
+    ) {
+      return false; // Usuário não existe, está inativo ou não é do tipo 2 (vendedor)
+    } else {
+      return true; // Usuário existe, está ativo e é do tipo 2 (vendedor)
+    }
+  } catch (error) {
+    console.error(error);
+    return false; // Em caso de erro, também tratamos como usuário inexistente
+  }
+};
+
+const clienteExiste = async (user) => {
+  try {
+    const { id_cliente } = user;
+
+    const query = "SELECT ativo, tipo_user FROM USUARIO WHERE ID = ?";
+    const [userExistRows] = await conn.execute(query, [id_cliente]);
+
+    if (
+      userExistRows.length === 0 ||
+      userExistRows[0].ativo === 0 ||
+      (userExistRows[0].tipo_user !== 1 && userExistRows[0].tipo_user !== 2)
+    ) {
+      return false; // Usuário não existe, está inativo ou não é do tipo 1 ou 2 (cliente)
+    } else {
+      return true; // Usuário existe, está ativo e é do tipo 1 ou 2 (cliente)
+    }
+  } catch (error) {
+    console.error(error);
+    return false; // Em caso de erro, também tratamos como usuário inexistente
+  }
+};
+
+
+
+
 
 const checkData = async (body) => {
   try {
@@ -97,12 +144,14 @@ const updateUser = async (id, user) => {
 };
 
 module.exports = {
-  //getAll,
+  getAll,
   createUser,
   userExist,
   checkData,
   checkLogin,
   deleteUser,
   updateUser,
+  vendExist,
+  clienteExiste
   //updateUser
 };
